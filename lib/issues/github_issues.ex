@@ -7,6 +7,7 @@ defmodule Issues.GithubIssues do
     issues_url(user, project)
     |> HTTPoison.get(@user_agent)
     |> handle_response
+    |> decode_response
   end
 
   def issues_url(user, project) do
@@ -18,7 +19,7 @@ defmodule Issues.GithubIssues do
 
     {
       status,
-      decode_response({status, Poison.Parser.parse!(nil, body)})
+      decode_response({status, Poison.Parser.parse!(body, %{})})
     }
   end
 
