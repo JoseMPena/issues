@@ -50,5 +50,18 @@ defmodule Issues.CLI do
 
   def process({user, project, count}) do
     Issues.GithubIssues.fetch(user, project)
+    |> sort_descending
+    |> last(count)
+  end
+
+  def sort_descending(list) do
+    list
+    |> Enum.sort(fn a, b -> a["created_at"] >= b["created_at"] end)
+  end
+
+  def last(list, count) do
+    list
+    |> Enum.take(count)
+    |> Enum.reverse
   end
 end
